@@ -83,6 +83,12 @@ def save_artifacts(cbm_model_path, classifier, pipeline_path, pipeline, col_conf
         pickle.dump(column_config, f)
 
 
+class MetricsLoggerCallback:
+    def after_iteration(self, info):
+        mlflow.log_metric('Loss', info.metrics['learn']['Logloss'][-1], step=info.iteration)
+        return True
+
+
 @click.command()
 @click.option('--train-path', type=click.Path(exists=True), required=True,
               help='Path to the train dataset in .h5 format.')
@@ -153,7 +159,8 @@ def train(train_path,
                                                   val_dataset,
                                                   hyper_params=hyper_params,
                                                   nr_attack_samples=nr_samples_attack_category,
-                                                  random_seed=random_seed)
+                                                  random_seed=random_seed,
+                                                  it_callback=MetricsLoggerCallback())
 
         pr_auc, precision, recall, f1 = measure_performance(clf, pipeline, test_dataset)
         logger.info('Estimator performance:')
@@ -161,6 +168,12 @@ def train(train_path,
         logger.info('precision: %f', precision)
         logger.info('recall: %f', recall)
         logger.info('f1: %f', f1)
+
+        # MLFlow metric logging
+        mlflow.log_metric('PR AUC', pr_auc)
+        mlflow.log_metric('Precision', precision)
+        mlflow.log_metric('Recall', recall)
+        mlflow.log_metric('F1', f1)
 
         save_artifacts(cbm_model_path,
                        clf,
@@ -171,6 +184,11 @@ def train(train_path,
                            'col_names': column_names,
                            'preserve_neg_vals': FEATURES_PRESERVE_NEG_COLUMNS
                        })
+
+        # MLFlow artifact logging
+        mlflow.log_artifact(cbm_model_path)
+        mlflow.log_artifact(pipeline_path)
+        mlflow.log_artifact(col_config_path)
 
         mlflow.pyfunc.save_model(
             path=mlflow_model_path,

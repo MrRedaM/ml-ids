@@ -93,7 +93,8 @@ def train_gb_classifier(train_pool,
                         border_count,
                         random_strength,
                         task_type,
-                        random_state=None):
+                        random_state=None,
+                        it_callback=None):
     """
     Trains an estimator based on the Gradient Boosting algorithm using the CatBoost library.
 
@@ -120,7 +121,7 @@ def train_gb_classifier(train_pool,
                              verbose=1,
                              random_seed=random_state)
 
-    clf.fit(train_pool, eval_set=val_pool)
+    clf.fit(train_pool, eval_set=val_pool, callbacks=[it_callback])
     return clf
 
 
@@ -128,7 +129,8 @@ def train_model(train_dataset: pd.DataFrame,
                 val_dataset: pd.DataFrame,
                 hyper_params: GradientBoostHyperParams,
                 nr_attack_samples: int,
-                random_seed: int = None):
+                random_seed: int = None,
+                it_callback=None):
     """
     Trains an estimator based on the Gradient Boosting algorithm using the CatBoost library.
 
@@ -165,6 +167,7 @@ def train_model(train_dataset: pd.DataFrame,
                               border_count=hyper_params.border_count,
                               random_strength=hyper_params.random_strength,
                               task_type=hyper_params.task_type,
-                              random_state=random_seed)
+                              random_state=random_seed,
+                              it_callback=it_callback)
 
     return clf, pipeline, col_names
