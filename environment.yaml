@@ -16,7 +16,7 @@ dependencies:
   - pylint
   - pytest
   - pytest-runner
-  - python
+  - python=3.10.6
   - python-dateutil
   - requests
   - scikit-learn
@@ -25,7 +25,7 @@ dependencies:
   - setuptools
   - h5py
   - pip:
-    - mlflow
+    - mlflow==1.30.0
     - sagemaker
     - h5py
     - hyperopt

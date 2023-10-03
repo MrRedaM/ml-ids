@@ -4,7 +4,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
+  - python=3.10.6
   - pip
   - h5py
   - pandas
@@ -17,4 +17,4 @@ dependencies:
   - pip:
     - tables
     - keras
-    - mlflow
+    - mlflow==1.30.0
