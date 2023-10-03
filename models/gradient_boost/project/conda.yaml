@@ -4,17 +4,17 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.7
-  - pip=19.2.3=py37_0
+  - python=3.10
+  - pip
   - h5py
   - pandas
   - catboost
-  - imbalanced-learn=0.5.0=py_0
-  - scikit-learn=0.21.3=py37hcdab131_0
+  - imbalanced-learn
+  - scikit-learn
   - scipy
   - click
-  - cloudpickle=1.2.2=py_0
+  - cloudpickle
   - pip:
-    - tables==3.6.1
-    - keras==2.2.4
-    - mlflow==1.4
+    - tables
+    - keras
+    - mlflow

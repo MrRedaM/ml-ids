@@ -55,7 +55,7 @@ def create_pipeline(df: pd.DataFrame,
                 raise AssertionError('Pipeline is not yet fitted.')
 
             try:
-                cat_names = p.transformers_[2][1].get_feature_names(cat)
+                cat_names = p.transformers_[2][1].get_feature_names_out(cat)
             except NotFittedError:
                 cat_names = []
             return np.append(imp, np.append(scl, cat_names))
